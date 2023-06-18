@@ -1,0 +1,19 @@
+{
+  "name": "vitest-config-silverwind",
+  "version": "0.1.0",
+  "description": "Shared vitest configuration",
+  "author": "silverwind <me@silverwind.io>",
+  "repository": "silverwind/vitest-config-silverwind",
+  "license": "BSD-2-Clause",
+  "type": "module",
+  "exports": "./index.js",
+  "files": [
+    "./index.js"
+  ],
+  "devDependencies": {
+    "eslint": "8.43.0",
+    "js-yaml": "4.1.0",
+    "updates": "14.2.4",
+    "versions": "11.0.1"
+  }
+}
