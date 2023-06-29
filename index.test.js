@@ -1,5 +1,6 @@
-import {config} from "./index.js";
+import {frontendTest, backendTest} from "./index.js";
 
 test("config", () => {
-  expect(config.test).toBeTruthy();
+  expect(frontendTest.environment).toBeTruthy();
+  expect(backendTest.environment).toBeTruthy();
 });

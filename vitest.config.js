@@ -1,4 +1,6 @@
 import {defineConfig} from "vitest/dist/config.js";
-import {config} from "./index.js";
+import {backendTest} from "./index.js";
 
-export default defineConfig(config);
+export default defineConfig({
+  test: backendTest,
+});
