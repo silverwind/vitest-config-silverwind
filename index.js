@@ -1,5 +1,5 @@
 const test = {
-  include: ["**/test.js", "**/*.test.js"],
+  include: ["**/?(*.)test.?(c|m)[jt]s?(x)"],
   testTimeout: 30000,
   threads: false, // https://github.com/vitest-dev/vitest/issues/2008
   cache: false, // https://github.com/vitest-dev/vitest/issues/2008
