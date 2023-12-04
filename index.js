@@ -3,7 +3,7 @@ import {join, dirname, basename} from "node:path";
 const test = {
   include: ["**/?(*.)test.?(c|m)[jt]s?(x)"],
   testTimeout: 30000,
-  threads: false, // https://github.com/vitest-dev/vitest/issues/2008
+  pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
   cache: false, // https://github.com/vitest-dev/vitest/issues/2008
   open: false,
   allowOnly: true,
