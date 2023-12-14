@@ -1,6 +1,7 @@
-import {join, dirname, basename} from "node:path";
+import {join, dirname, basename, relative, sep} from "node:path";
+import {fileURLToPath} from "node:url";
 
-const test = () => ({
+const test = ({url} = {}) => ({
   include: ["**/?(*.)test.?(c|m)[jt]s?(x)"],
   testTimeout: 30000,
   pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
@@ -11,16 +12,22 @@ const test = () => ({
   globals: true,
   watch: false,
   resolveSnapshotPath: (path, extension) => {
-    return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
+    if (url) { // single snapshot dir in root
+      const root = dirname(fileURLToPath(new URL(url)));
+      const file = `${relative(root, path).replaceAll(sep, ".")}${extension}`;
+      return join(root, "snapshots", file);
+    } else { // subfolder besides the file
+      return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
+    }
   },
 });
 
-export const frontendTest = () => ({
+export const frontendTest = (...opts) => ({
   environment: "jsdom",
-  ...test(),
+  ...test(...opts),
 });
 
-export const backendTest = () => ({
+export const backendTest = (...opts) => ({
   environment: "node",
-  ...test(),
+  ...test(...opts),
 });
