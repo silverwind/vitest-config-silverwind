@@ -1,6 +1,6 @@
 import {join, dirname, basename} from "node:path";
 
-const test = {
+const test = () => ({
   include: ["**/?(*.)test.?(c|m)[jt]s?(x)"],
   testTimeout: 30000,
   pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
@@ -13,14 +13,14 @@ const test = {
   resolveSnapshotPath: (path, extension) => {
     return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
   },
-};
+});
 
-export const frontendTest = {
+export const frontendTest = () => ({
   environment: "jsdom",
-  ...test,
-};
+  ...test(),
+});
 
-export const backendTest = {
+export const backendTest = () => ({
   environment: "node",
-  ...test,
-};
+  ...test(),
+});
