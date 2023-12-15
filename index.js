@@ -22,12 +22,12 @@ const test = ({url} = {}) => ({
   },
 });
 
-export const frontendTest = (...opts) => ({
+export const frontendTest = opts => ({
   environment: "jsdom",
-  ...test(...opts),
+  ...test(opts),
 });
 
-export const backendTest = (...opts) => ({
+export const backendTest = opts => ({
   environment: "node",
-  ...test(...opts),
+  ...test(opts),
 });
