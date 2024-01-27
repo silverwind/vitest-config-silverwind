@@ -11,7 +11,6 @@ const base = ({url} = {}) => ({
   passWithNoTests: true,
   globals: true,
   watch: false,
-  disableConsoleIntercept: true,
   resolveSnapshotPath: (path, extension) => {
     if (url) { // single snapshot dir in root
       const root = dirname(fileURLToPath(new URL(url)));
