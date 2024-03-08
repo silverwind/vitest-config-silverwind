@@ -2,7 +2,14 @@ import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 
 const base = ({url} = {}) => ({
-  include: ["**/?(*.)test.?(c|m)[jt]s?(x)"],
+  include: [
+    "**/?(*.)test.?(c|m)[jt]s?(x)",
+  ],
+  exclude: [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.{git,venv,make}/**",
+  ],
   testTimeout: 30000,
   pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
   cache: false, // https://github.com/vitest-dev/vitest/issues/2008
