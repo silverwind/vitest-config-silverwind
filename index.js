@@ -8,6 +8,7 @@ const base = ({url} = {}) => ({
   exclude: [
     "**/node_modules/**",
     "**/dist/**",
+    "**/e2e/**",
     "**/.{git,venv,make}/**",
   ],
   testTimeout: 30000,
