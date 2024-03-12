@@ -6,9 +6,7 @@ const base = ({url} = {}) => ({
     "**/?(*.)test.?(c|m)[jt]s?(x)",
   ],
   exclude: [
-    "**/node_modules/**",
-    "**/dist/**",
-    "**/e2e/**",
+    "**/{node_modules,dist,e2e}/**",
     "**/.{git,venv,make}/**",
   ],
   testTimeout: 30000,
