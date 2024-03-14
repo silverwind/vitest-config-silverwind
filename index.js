@@ -6,8 +6,8 @@ const base = ({url} = {}) => ({
     "**/?(*.)test.?(c|m)[jt]s?(x)",
   ],
   exclude: [
-    "**/{node_modules,dist,e2e}/**",
-    "**/.{git,venv,make}/**",
+    "**/{node_modules,dist,e2e,snapshots}/**",
+    "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
   ],
   testTimeout: 30000,
   pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
