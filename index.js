@@ -29,7 +29,7 @@ const base = ({url} = {}) => ({
 });
 
 export const frontendTest = opts => ({
-  environment: "jsdom",
+  environment: "happy-dom",
   ...base(opts),
 });
 
