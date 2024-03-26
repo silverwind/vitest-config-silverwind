@@ -9,7 +9,7 @@
   "exports": "./index.js",
   "files": [
     "index.js",
-    "setup.js"
+    "vitest.setup.js"
   ],
   "dependencies": {
     "jest-extended": "4.0.2"
