@@ -8,8 +8,12 @@
   "type": "module",
   "exports": "./index.js",
   "files": [
-    "index.js"
+    "index.js",
+    "setup.js"
   ],
+  "dependencies": {
+    "jest-extended": "4.0.2"
+  },
   "devDependencies": {
     "eslint": "8.57.0",
     "eslint-config-silverwind": "82.0.6",

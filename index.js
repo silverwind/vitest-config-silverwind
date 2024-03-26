@@ -1,13 +1,17 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 
-const base = ({url} = {}) => ({
+const base = ({url, setupFiles = []} = {}) => ({
   include: [
     "**/?(*.)test.?(c|m)[jt]s?(x)",
   ],
   exclude: [
     "**/{node_modules,dist,e2e,snapshots}/**",
     "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
+  ],
+  setupFiles: [
+    fileURLToPath(new URL("vitest.setup.js", import.meta.url)),
+    ...setupFiles,
   ],
   testTimeout: 30000,
   pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
