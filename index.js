@@ -1,7 +1,7 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 
-const base = ({url, setupFiles = []} = {}) => ({
+const base = ({url, setupFiles = [], ...opts} = {}) => ({
   include: [
     "**/?(*.)test.?(c|m)[jt]s?(x)",
   ],
@@ -30,6 +30,7 @@ const base = ({url, setupFiles = []} = {}) => ({
       return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
     }
   },
+  ...opts,
 });
 
 export const frontendTest = opts => ({
