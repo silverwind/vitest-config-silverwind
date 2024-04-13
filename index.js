@@ -37,7 +37,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...othe
     ...otherTest,
   },
   plugins: uniq([
-    stringPlugin,
+    stringPlugin(),
     ...plugins,
   ]),
   ...other,
