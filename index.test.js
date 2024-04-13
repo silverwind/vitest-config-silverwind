@@ -6,7 +6,9 @@ test("config", () => {
   expect(backend().test.setupFiles.length).toEqual(1);
   expect(backend().plugins.length).toEqual(1);
   expect(backend({test: {setupFiles: ["foo"]}}).test.setupFiles.length).toEqual(2);
-  expect(backend({plugins: ["foo"]}).plugins.length).toEqual(2);
+  expect(backend({plugins: [{name: "foo"}]}).plugins.length).toEqual(2);
+  expect(backend({plugins: [{name: "1"}, {name: "1"}]}).plugins.length).toEqual(2);
+  expect(backend({plugins: [{name: "1"}, {name: "2"}]}).plugins.length).toEqual(3);
 });
 
 test("jest-extended", () => {

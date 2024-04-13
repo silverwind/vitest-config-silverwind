@@ -3,6 +3,27 @@ import {fileURLToPath} from "node:url";
 import {stringPlugin} from "vite-string-plugin";
 
 const uniq = arr => Array.from(new Set(arr));
+const uniquePluginName = ({name, apply, enforce} = {}) => `${name}-${apply}-${enforce}`;
+
+function dedupePlugins(plugins) {
+  const seen = new Set([]);
+  const ret = [];
+
+  for (const plugin of plugins.reverse()) {
+    const name = plugin ? uniquePluginName(plugin) : null;
+
+    if (seen.has(name)) {
+      continue;
+    } else {
+      ret.push(plugin);
+      if (name) {
+        seen.add(name);
+      }
+    }
+  }
+
+  return ret;
+}
 
 const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...other} = {}) => ({
   test: {
@@ -36,7 +57,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...othe
     },
     ...otherTest,
   },
-  plugins: uniq([
+  plugins: dedupePlugins([
     stringPlugin(),
     ...plugins,
   ]),
