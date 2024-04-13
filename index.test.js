@@ -1,8 +1,8 @@
-import {frontendTest, backendTest} from "./index.js";
+import {frontend, backend} from "./index.js";
 
 test("config", () => {
-  expect(frontendTest().environment).toBeTruthy();
-  expect(backendTest().environment).toBeTruthy();
+  expect(frontend().test.environment).toBeTruthy();
+  expect(backend().test.environment).toBeTruthy();
 });
 
 test("jest-extended", () => {
