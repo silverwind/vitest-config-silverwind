@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "jest-extended": "4.0.2",
-    "vite-string-plugin": "1.1.5"
+    "vite-string-plugin": "^1.1.5"
   },
   "devDependencies": {
     "eslint": "8.57.0",
