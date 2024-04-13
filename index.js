@@ -4,7 +4,7 @@ import {stringPlugin} from "vite-string-plugin";
 
 const uniq = arr => Array.from(new Set(arr));
 
-const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
+const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...other} = {}) => ({
   test: {
     include: [
       "**/?(*.)test.?(c|m)[jt]s?(x)",
@@ -15,7 +15,7 @@ const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
     ],
     setupFiles: uniq([
       fileURLToPath(new URL("vitest.setup.js", import.meta.url)),
-      ...(test.setupFiles || []),
+      ...setupFiles,
     ]),
     testTimeout: 30000,
     pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
@@ -34,7 +34,7 @@ const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
         return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
       }
     },
-    ...test,
+    ...otherTest,
   },
   plugins: uniq([
     stringPlugin,
