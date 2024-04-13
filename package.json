@@ -1,6 +1,6 @@
 {
   "name": "vitest-config-silverwind",
-  "version": "8.0.2",
+  "version": "8.0.3",
   "description": "Shared vitest configuration",
   "author": "silverwind <me@silverwind.io>",
   "repository": "silverwind/vitest-config-silverwind",
