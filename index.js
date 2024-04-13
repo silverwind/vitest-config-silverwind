@@ -2,6 +2,8 @@ import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {stringPlugin} from "vite-string-plugin";
 
+const uniq = arr => Array.from(new Set(arr));
+
 const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
   test: {
     include: [
@@ -11,10 +13,10 @@ const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
       "**/{node_modules,dist,e2e,snapshots}/**",
       "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
     ],
-    setupFiles: [
+    setupFiles: uniq([
       fileURLToPath(new URL("vitest.setup.js", import.meta.url)),
       ...(test.setupFiles || []),
-    ],
+    ]),
     testTimeout: 30000,
     pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
     cache: false, // https://github.com/vitest-dev/vitest/issues/2008
@@ -34,10 +36,10 @@ const base = ({url, test = {}, plugins = [], ...other} = {}) => ({
     },
     ...test,
   },
-  plugins: [
+  plugins: uniq([
     stringPlugin,
     ...plugins,
-  ],
+  ]),
   ...other,
 });
 
