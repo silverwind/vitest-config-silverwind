@@ -13,15 +13,15 @@
   ],
   "dependencies": {
     "jest-extended": "4.0.2",
-    "vite-string-plugin": "^1.1.5"
+    "vite-string-plugin": "^1.2.0"
   },
   "devDependencies": {
     "eslint": "8.57.0",
-    "eslint-config-silverwind": "82.0.6",
+    "eslint-config-silverwind": "83.0.3",
     "js-yaml": "4.1.0",
-    "updates": "16.0.0",
+    "updates": "16.0.1",
     "versions": "12.0.1",
-    "vitest": "1.4.0"
+    "vitest": "1.5.0"
   },
   "peerDependencies": {
     "happy-dom": "*"
