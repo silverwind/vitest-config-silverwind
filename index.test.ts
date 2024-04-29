@@ -1,4 +1,4 @@
-import {frontend, backend} from "./index.js";
+import {frontend, backend} from "./index.ts";
 
 test("config", () => {
   expect(frontend().test.environment).toBeTruthy();

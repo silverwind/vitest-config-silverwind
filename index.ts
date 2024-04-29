@@ -1,6 +1,7 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {stringPlugin} from "vite-string-plugin";
+import type {UserConfig} from "vitest";
 
 const uniq = arr => Array.from(new Set(arr));
 const uniquePluginName = ({name, apply, enforce} = {}) => `${name}-${apply}-${enforce}`;
@@ -35,7 +36,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...othe
       "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
     ],
     setupFiles: uniq([
-      fileURLToPath(new URL("vitest.setup.js", import.meta.url)),
+      fileURLToPath(new URL("vitest.setup.ts", import.meta.url)),
       ...setupFiles,
     ]),
     testTimeout: 30000,
@@ -64,7 +65,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...othe
   ...other,
 });
 
-export const frontend = ({test = {}, ...other} = {}) => base({
+export const frontend = ({test = {}, ...other} = {}): UserConfig => base({
   test: {
     environment: "happy-dom",
     ...test,
@@ -72,7 +73,7 @@ export const frontend = ({test = {}, ...other} = {}) => base({
   ...other,
 });
 
-export const backend = ({test = {}, ...other} = {}) => base({
+export const backend = ({test = {}, ...other} = {}): UserConfig => base({
   test: {
     environment: "node",
     ...test,
