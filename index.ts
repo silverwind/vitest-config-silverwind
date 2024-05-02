@@ -20,7 +20,7 @@ function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
   const seen: Set<any> = new Set([]);
   const ret: Plugin[] = [];
 
-  for (const plugin of plugins) {
+  for (const plugin of plugins.toReversed()) { // reverse so user plugins stay
     const name = plugin ? uniquePluginName(plugin as Plugin) : null;
 
     if (seen.has(name)) {
@@ -33,7 +33,7 @@ function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
     }
   }
 
-  return ret;
+  return ret.toReversed();
 }
 
 // avoid vite bug https://github.com/vitejs/vite/issues/3295
