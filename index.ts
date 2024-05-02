@@ -1,22 +1,29 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {stringPlugin} from "vite-string-plugin";
-import type {UserConfig} from "vitest";
+import type {InlineConfig} from "vitest";
+import type {Plugin, UserConfig, PluginOption} from "vite";
 
-const uniq = arr => Array.from(new Set(arr));
-const uniquePluginName = ({name, apply, enforce} = {}) => `${name}-${apply}-${enforce}`;
+const uniq = (arr: any[]): any[] => Array.from(new Set(arr));
+const uniquePluginName = (plugin: Plugin): string => {
+  const apply = typeof plugin.apply === "string" ? plugin.apply : "";
+  return `${plugin.name}-${apply}-${String(plugin.enforce)}`;
+};
 
-function dedupePlugins(plugins) {
-  const seen = new Set([]);
-  const ret = [];
+type VitestConfig = UserConfig & { test?: InlineConfig };
+type CustomConfig = VitestConfig & { url?: string };
 
-  for (const plugin of plugins.reverse()) {
-    const name = plugin ? uniquePluginName(plugin) : null;
+function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
+  const seen: Set<any> = new Set([]);
+  const ret: Plugin[] = [];
+
+  for (const plugin of plugins.toReversed()) {
+    const name = plugin ? uniquePluginName(plugin as Plugin) : null;
 
     if (seen.has(name)) {
       continue;
     } else {
-      ret.push(plugin);
+      ret.push(plugin as Plugin);
       if (name) {
         seen.add(name);
       }
@@ -26,7 +33,7 @@ function dedupePlugins(plugins) {
   return ret;
 }
 
-const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...other} = {}) => ({
+const base = ({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ...other}: CustomConfig = {}): VitestConfig => ({
   test: {
     include: [
       "**/?(*.)test.?(c|m)[jt]s?(x)",
@@ -65,7 +72,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest}, plugins = [], ...othe
   ...other,
 });
 
-export const frontend = ({test = {}, ...other} = {}): UserConfig => base({
+export const frontend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
     environment: "happy-dom",
     ...test,
@@ -73,7 +80,7 @@ export const frontend = ({test = {}, ...other} = {}): UserConfig => base({
   ...other,
 });
 
-export const backend = ({test = {}, ...other} = {}): UserConfig => base({
+export const backend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
     environment: "node",
     ...test,
