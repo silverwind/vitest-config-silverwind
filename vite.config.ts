@@ -17,7 +17,7 @@ export default defineConfig({
     lib: {
       entry: [
         fileURLToPath(new URL("index.ts", import.meta.url)),
-        fileURLToPath(new URL("vitest.setup.ts", import.meta.url)),
+        fileURLToPath(new URL("vitest.setup.js", import.meta.url)),
       ],
       formats: ["es"],
     },

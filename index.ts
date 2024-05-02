@@ -36,6 +36,9 @@ function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
   return ret;
 }
 
+// avoid vite bug https://github.com/vitejs/vite/issues/3295
+const setupFile = "vitest.setup.js";
+
 const base = ({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ...other}: CustomConfig = {}): VitestConfig => ({
   test: {
     include: [
@@ -46,7 +49,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
       "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
     ],
     setupFiles: uniq([
-      fileURLToPath(new URL("vitest.setup.ts", import.meta.url)),
+      fileURLToPath(new URL(setupFile, import.meta.url)),
       ...setupFiles,
     ]),
     testTimeout: 30000,
