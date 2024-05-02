@@ -20,7 +20,7 @@ function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
   const seen: Set<any> = new Set([]);
   const ret: Plugin[] = [];
 
-  for (const plugin of plugins.toReversed()) {
+  for (const plugin of plugins) {
     const name = plugin ? uniquePluginName(plugin as Plugin) : null;
 
     if (seen.has(name)) {
