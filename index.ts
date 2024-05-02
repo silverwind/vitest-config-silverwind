@@ -16,11 +16,11 @@ type CustomConfig = VitestConfig & {
   url?: string,
 };
 
-function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
+function dedupePlugins(libPlugins: PluginOption[], userPlugins: PluginOption[]): PluginOption[] {
   const seen: Set<any> = new Set([]);
   const ret: Plugin[] = [];
 
-  for (const plugin of plugins.toReversed()) { // reverse so user plugins stay
+  for (const plugin of [...userPlugins, ...libPlugins]) { // prefer user plugins
     const name = plugin ? uniquePluginName(plugin as Plugin) : null;
 
     if (seen.has(name)) {
@@ -33,7 +33,7 @@ function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
     }
   }
 
-  return ret.toReversed();
+  return ret;
 }
 
 // avoid vite bug https://github.com/vitejs/vite/issues/3295
@@ -73,8 +73,7 @@ const base = ({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
   },
   plugins: dedupePlugins([
     stringPlugin(),
-    ...plugins,
-  ]),
+  ], plugins),
   ...other,
 });
 
