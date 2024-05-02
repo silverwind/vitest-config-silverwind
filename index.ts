@@ -11,7 +11,10 @@ const uniquePluginName = (plugin: Plugin): string => {
 };
 
 type VitestConfig = UserConfig & { test?: InlineConfig };
-type CustomConfig = VitestConfig & { url?: string };
+type CustomConfig = VitestConfig & {
+  /** The value of import.meta.url from your config. */
+  url?: string,
+};
 
 function dedupePlugins(plugins: PluginOption[]): PluginOption[] {
   const seen: Set<any> = new Set([]);
