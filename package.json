@@ -14,7 +14,7 @@
     "dist"
   ],
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   },
   "dependencies": {
     "jest-extended": "4.0.2",
