@@ -10,8 +10,8 @@ type CustomConfig = VitestConfig & {
   url?: string,
 };
 
-function uniq<T extends any[]>(arr: T): any[] {
-  return Array.from(new Set(arr));
+function uniq<T extends any[]>(arr: T): T {
+  return Array.from(new Set(arr)) as T;
 }
 
 function uniquePluginName(plugin: Plugin): string {
