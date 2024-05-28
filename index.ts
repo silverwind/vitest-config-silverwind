@@ -4,17 +4,20 @@ import {stringPlugin} from "vite-string-plugin";
 import type {InlineConfig} from "vitest";
 import type {Plugin, UserConfig, PluginOption} from "vite";
 
-const uniq = (arr: any[]): any[] => Array.from(new Set(arr));
-const uniquePluginName = (plugin: Plugin): string => {
-  const apply = typeof plugin.apply === "string" ? plugin.apply : "";
-  return `${plugin.name}-${apply}-${String(plugin.enforce)}`;
-};
-
 type VitestConfig = UserConfig & { test?: InlineConfig };
 type CustomConfig = VitestConfig & {
   /** The value of import.meta.url from your config. */
   url?: string,
 };
+
+function uniq<T extends any[]>(arr: T): any[] {
+  return Array.from(new Set(arr));
+}
+
+function uniquePluginName(plugin: Plugin): string {
+  const apply = typeof plugin.apply === "string" ? plugin.apply : "";
+  return `${plugin.name}-${apply}-${String(plugin.enforce)}`;
+}
 
 function dedupePlugins(libPlugins: PluginOption[], userPlugins: PluginOption[]): PluginOption[] {
   const seen: Set<any> = new Set([]);
