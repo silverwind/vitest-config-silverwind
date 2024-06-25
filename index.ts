@@ -1,5 +1,6 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
+import {accessSync, constants} from "node:fs";
 import {stringPlugin} from "vite-string-plugin";
 import type {InlineConfig} from "vitest";
 import type {Plugin, UserConfig, PluginOption} from "vite";
@@ -7,7 +8,11 @@ import type {Plugin, UserConfig, PluginOption} from "vite";
 type VitestConfig = UserConfig & { test?: InlineConfig };
 type CustomConfig = VitestConfig & {
   /** The value of import.meta.url from your config. */
-  url?: string,
+  url: string,
+};
+
+const defaultConfig = {
+  url: "",
 };
 
 function uniq<T extends any[]>(arr: T): T {
@@ -40,47 +45,59 @@ function dedupePlugins(libPlugins: PluginOption[], userPlugins: PluginOption[]):
 }
 
 // avoid vite bug https://github.com/vitejs/vite/issues/3295
-const setupFile = "vitest.setup.js";
+const setupFileJs = "vitest.setup.js";
+const setupFileTs = "vitest.setup.ts";
 
-const base = ({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ...other}: CustomConfig = {}): VitestConfig => ({
-  test: {
-    include: [
-      "**/?(*.)test.?(c|m)[jt]s?(x)",
-    ],
-    exclude: [
-      "**/{node_modules,dist,e2e,snapshots}/**",
-      "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
-    ],
-    setupFiles: uniq([
-      fileURLToPath(new URL(setupFile, import.meta.url)),
-      ...setupFiles,
-    ]),
-    testTimeout: 30000,
-    pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
-    cache: false, // https://github.com/vitest-dev/vitest/issues/2008
-    open: false,
-    allowOnly: true,
-    passWithNoTests: true,
-    globals: true,
-    watch: false,
-    resolveSnapshotPath: (path, extension) => {
-      if (url) { // single snapshot dir in root
-        const root = dirname(fileURLToPath(new URL(url)));
-        const file = `${relative(root, path).replaceAll(sep, ".")}${extension}`;
-        return join(root, "snapshots", file);
-      } else { // subfolder besides the file
-        return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
-      }
+function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ...other}: CustomConfig): VitestConfig {
+  let setupFile: string = "";
+  for (const file of [setupFileJs, setupFileTs]) {
+    try {
+      const path = fileURLToPath(new URL(file, import.meta.url));
+      accessSync(path, constants.R_OK);
+      setupFile = path;
+    } catch {}
+  }
+
+  return {
+    test: {
+      include: [
+        "**/?(*.)test.?(c|m)[jt]s?(x)",
+      ],
+      exclude: [
+        "**/{node_modules,dist,e2e,snapshots}/**",
+        "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
+      ],
+      setupFiles: uniq([
+        setupFile,
+        ...setupFiles,
+      ].filter(Boolean)),
+      testTimeout: 30000,
+      pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
+      cache: false, // https://github.com/vitest-dev/vitest/issues/2008
+      open: false,
+      allowOnly: true,
+      passWithNoTests: true,
+      globals: true,
+      watch: false,
+      resolveSnapshotPath: (path, extension) => {
+        if (url) { // single snapshot dir in root
+          const root = dirname(fileURLToPath(new URL(url)));
+          const file = `${relative(root, path).replaceAll(sep, ".")}${extension}`;
+          return join(root, "snapshots", file);
+        } else { // subfolder besides the file
+          return join(dirname(path), "snapshots", `${basename(path)}${extension}`);
+        }
+      },
+      ...otherTest,
     },
-    ...otherTest,
-  },
-  plugins: dedupePlugins([
-    stringPlugin(),
-  ], plugins),
-  ...other,
-});
+    plugins: dedupePlugins([
+      stringPlugin(),
+    ], plugins),
+    ...other,
+  };
+}
 
-export const frontend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
+export const frontend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
   test: {
     environment: "happy-dom",
     ...test,
@@ -88,7 +105,7 @@ export const frontend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig
   ...other,
 });
 
-export const backend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
+export const backend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
   test: {
     environment: "node",
     ...test,
