@@ -2,7 +2,7 @@ import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {accessSync, constants} from "node:fs";
 import {stringPlugin} from "vite-string-plugin";
-import type {InlineConfig} from "vitest";
+import type {InlineConfig} from "vitest/node";
 import type {Plugin, UserConfig, PluginOption} from "vite";
 
 type VitestConfig = UserConfig & { test?: InlineConfig };
