@@ -64,8 +64,8 @@ function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
         "**/?(*.)test.?(c|m)[jt]s?(x)",
       ],
       exclude: [
-        "**/{node_modules,dist,e2e,snapshots}/**",
-        "**/.{air,git,github,gitea,swc,ruff_cache,venv,vscode}/**",
+        "**/{node_modules,dist,build,e2e,snapshots,fixtures,persistent}/**",
+        "**/.{air,git,github,gitea,make,swc,ruff_cache,venv,vscode}/**",
       ],
       setupFiles: uniq([
         setupFile,
