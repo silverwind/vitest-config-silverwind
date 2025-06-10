@@ -17,21 +17,21 @@
     "node": ">=18"
   },
   "dependencies": {
-    "jest-extended": "4.0.2",
+    "jest-extended": "6.0.0",
     "vite-string-plugin": "^1.4.4"
   },
   "devDependencies": {
-    "@types/node": "22.13.14",
+    "@types/node": "24.0.0",
     "eslint": "8.57.0",
-    "eslint-config-silverwind": "100.0.5",
+    "eslint-config-silverwind": "100.2.3",
     "js-yaml": "4.1.0",
-    "typescript": "5.8.2",
-    "typescript-config-silverwind": "9.0.1",
+    "typescript": "5.8.3",
+    "typescript-config-silverwind": "9.0.8",
     "updates": "16.4.2",
     "versions": "12.1.3",
-    "vite": "6.2.3",
-    "vite-plugin-dts": "4.5.3",
-    "vitest": "3.0.9"
+    "vite": "6.3.5",
+    "vite-plugin-dts": "4.5.4",
+    "vitest": "3.2.3"
   },
   "peerDependencies": {
     "happy-dom": "*"
