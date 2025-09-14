@@ -5,7 +5,7 @@ import {stringPlugin} from "vite-string-plugin";
 import type {InlineConfig} from "vitest/node";
 import type {Plugin, UserConfig, PluginOption} from "vite";
 
-type VitestConfig = UserConfig & { test?: InlineConfig };
+type VitestConfig = UserConfig & {test?: InlineConfig};
 type CustomConfig = VitestConfig & {
   /** The value of import.meta.url from your config. */
   url: string,
