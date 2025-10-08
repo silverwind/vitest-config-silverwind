@@ -31,7 +31,6 @@ build: node_modules $(DIST_FILES)
 
 $(DIST_FILES): $(SOURCE_FILES) package-lock.json package.json tsdown.config.ts
 	npx tsdown
-	@rm -f dist/*.map # tsdown bug?
 
 .PHONY: publish
 publish: node_modules
