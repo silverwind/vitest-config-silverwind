@@ -20,19 +20,19 @@
     "jest-extended": "6.0.0"
   },
   "devDependencies": {
-    "@types/node": "24.9.1",
-    "eslint": "9.38.0",
-    "eslint-config-silverwind": "108.0.3",
+    "@types/node": "24.10.0",
+    "eslint": "9.39.1",
+    "eslint-config-silverwind": "110.0.0",
     "js-yaml": "4.1.0",
-    "tsdown": "0.15.9",
-    "tsdown-config-silverwind": "1.4.0",
+    "tsdown": "0.16.0",
+    "tsdown-config-silverwind": "1.5.2",
     "typescript": "5.9.3",
     "typescript-config-silverwind": "12.0.0",
-    "updates": "16.8.1",
-    "versions": "14.0.1",
+    "updates": "16.9.1",
+    "versions": "14.0.2",
     "vite-plugin-dts": "4.5.4",
     "vite-string-plugin": "^1.4.6",
-    "vitest": "4.0.1"
+    "vitest": "4.0.7"
   },
   "peerDependencies": {
     "happy-dom": "*"

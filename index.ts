@@ -25,7 +25,7 @@ function uniquePluginName(plugin: Plugin): string {
 }
 
 function dedupePlugins(libPlugins: PluginOption[], userPlugins: PluginOption[]): PluginOption[] {
-  const seen: Set<any> = new Set([]);
+  const seen: Set<any> = new Set();
   const ret: Plugin[] = [];
 
   for (const plugin of [...userPlugins, ...libPlugins]) { // prefer user plugins
