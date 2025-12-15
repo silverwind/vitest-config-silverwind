@@ -15,7 +15,7 @@ const defaultConfig = {
   url: "",
 };
 
-function uniq<T extends any[]>(arr: T): T {
+function uniq<T extends Array<any>>(arr: T): T {
   return Array.from(new Set(arr)) as T;
 }
 
@@ -24,9 +24,9 @@ function uniquePluginName(plugin: Plugin): string {
   return `${plugin.name}-${apply}-${String(plugin.enforce)}`;
 }
 
-function dedupePlugins(libPlugins: PluginOption[], userPlugins: PluginOption[]): PluginOption[] {
-  const seen: Set<any> = new Set();
-  const ret: Plugin[] = [];
+function dedupePlugins(libPlugins: Array<PluginOption>, userPlugins: Array<PluginOption>): Array<PluginOption> {
+  const seen = new Set<any>();
+  const ret: Array<Plugin> = [];
 
   for (const plugin of [...userPlugins, ...libPlugins]) { // prefer user plugins
     const name = plugin ? uniquePluginName(plugin as Plugin) : null;
