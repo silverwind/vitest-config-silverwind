@@ -72,6 +72,7 @@ function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
         ...setupFiles,
       ].filter(Boolean)),
       testTimeout: 30000,
+      isolate: false, // perf improvement when tests are pure
       pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
       cache: false, // https://github.com/vitest-dev/vitest/issues/2008
       open: false,
