@@ -16,6 +16,16 @@
   "engines": {
     "node": ">=20"
   },
+  "peerDependencies": {
+    "happy-dom": "*",
+    "vitest": "*",
+    "vite": "*"
+  },
+  "peerDependenciesMeta": {
+    "happy-dom": {
+      "optional": true
+    }
+  },
   "dependencies": {
     "jest-extended": "7.0.0"
   },
@@ -33,15 +43,5 @@
     "vite-plugin-dts": "4.5.4",
     "vite-string-plugin": "^1.4.9",
     "vitest": "4.0.18"
-  },
-  "peerDependencies": {
-    "happy-dom": "*",
-    "vitest": "*",
-    "vite": "*"
-  },
-  "peerDependenciesMeta": {
-    "happy-dom": {
-      "optional": true
-    }
   }
 }
