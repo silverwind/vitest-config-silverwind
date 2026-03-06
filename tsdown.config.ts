@@ -8,5 +8,5 @@ export default defineConfig(nodeLib({
     fileURLToPath(new URL("index.ts", import.meta.url)),
     fileURLToPath(new URL("vitest.setup.ts", import.meta.url)),
   ],
-  external: ["vitest", "jest-extended"],
+  deps: {neverBundle: ["vitest", "jest-extended"]},
 }));
