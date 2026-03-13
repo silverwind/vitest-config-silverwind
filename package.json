@@ -31,7 +31,7 @@
     "jest-extended": "7.0.0"
   },
   "devDependencies": {
-    "@types/node": "25.4.0",
+    "@types/node": "25.5.0",
     "@typescript/native-preview": "7.0.0-dev.20260312.1",
     "eslint": "9.39.4",
     "eslint-config-silverwind": "124.0.7",
@@ -44,7 +44,7 @@
     "updates-config-silverwind": "1.0.3",
     "versions": "14.2.1",
     "vite-plugin-dts": "4.5.4",
-    "vite-string-plugin": "^2.0.1",
+    "vite-string-plugin": "^2.0.2",
     "vitest": "4.1.0"
   }
 }
