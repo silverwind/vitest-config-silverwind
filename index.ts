@@ -81,7 +81,7 @@ function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
       globals: true,
       watch: false,
       sequence: {concurrent: true},
-      snapshotFormat: {maxOutputLength: 512 * 1024 * 1024},
+      snapshotFormat: {maxOutputLength: 50 * 1024 * 1024},
       resolveSnapshotPath: (path, extension) => {
         if (url) { // single snapshot dir in root
           const root = dirname(fileURLToPath(new URL(url)));
