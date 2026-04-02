@@ -60,6 +60,7 @@ const coverageExclude = [
   "**/*.test.*",
   "**/*.stories.*",
   "**/*.d.ts",
+  "**/bench.*",
   "**/package.json",
   ...dirExclude,
 ];
