@@ -56,9 +56,11 @@ const dirExclude = [
 
 /** Files to exclude from coverage, always applied even when user adds custom excludes */
 const coverageExclude = [
+  "**/*.config.*",
   "**/*.test.*",
   "**/*.stories.*",
   "**/*.d.ts",
+  "**/package.json",
   ...dirExclude,
 ];
 
