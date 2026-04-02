@@ -48,7 +48,21 @@ function dedupePlugins(libPlugins: Array<PluginOption>, userPlugins: Array<Plugi
 const setupFileJs = "vitest.setup.js";
 const setupFileTs = "vitest.setup.ts";
 
-function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ...other}: CustomConfig): VitestConfig {
+/** Directories to exclude from both test discovery and coverage */
+const dirExclude = [
+  "**/{node_modules,dist,build,e2e,snapshots,fixtures,persistent}/**",
+  "**/.{air,git,github,gitea,make,swc,ruff_cache,venv,vscode}/**",
+];
+
+/** Files to exclude from coverage, always applied even when user adds custom excludes */
+const coverageExclude = [
+  "**/*.test.*",
+  "**/*.stories.*",
+  "**/*.d.ts",
+  ...dirExclude,
+];
+
+function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest} = {}, plugins = [], ...other}: CustomConfig): VitestConfig {
   let setupFile: string = "";
   for (const file of [setupFileJs, setupFileTs]) {
     try {
@@ -63,10 +77,7 @@ function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
       include: [
         "**/?(*.)test.?(c|m)[jt]s?(x)",
       ],
-      exclude: [
-        "**/{node_modules,dist,build,e2e,snapshots,fixtures,persistent}/**",
-        "**/.{air,git,github,gitea,make,swc,ruff_cache,venv,vscode}/**",
-      ],
+      exclude: dirExclude,
       setupFiles: uniq([
         setupFile,
         ...setupFiles,
@@ -81,6 +92,16 @@ function base({url, test: {setupFiles = [], ...otherTest} = {}, plugins = [], ..
       globals: true,
       watch: false,
       sequence: {concurrent: true},
+      coverage: {
+        provider: "v8",
+        reporter: ["text"],
+        include: ["**/*.{js,ts,jsx,tsx}"],
+        ...userCoverage,
+        exclude: uniq([
+          ...coverageExclude,
+          ...(userCoverage?.exclude ?? []),
+        ]),
+      },
       snapshotFormat: {maxOutputLength: 50 * 1024 * 1024},
       resolveSnapshotPath: (path, extension) => {
         if (url) { // single snapshot dir in root
