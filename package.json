@@ -42,7 +42,7 @@
     "typescript-config-silverwind": "17.0.0",
     "updates": "17.13.2",
     "updates-config-silverwind": "2.0.1",
-    "versions": "14.2.6",
+    "versions": "14.3.1",
     "vite-plugin-dts": "4.5.4",
     "vite-string-plugin": "^2.0.2",
     "vitest": "4.1.2"
