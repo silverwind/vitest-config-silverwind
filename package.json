@@ -18,6 +18,7 @@
     "node": ">=20"
   },
   "peerDependencies": {
+    "@vitest/coverage-v8": "*",
     "happy-dom": "*",
     "vite": "*",
     "vitest": "*"
