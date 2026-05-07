@@ -38,3 +38,23 @@ test("jest-extended", () => {
   expect([]).toBeArray();
   expect({}).toBeObject();
 });
+
+// Node 25+ enables Web Storage by default which shadows happy-dom's Storage in
+// vitest's env setup, leaving `localStorage` undefined. The frontend config
+// passes --no-experimental-webstorage to fix this.
+// https://github.com/vitest-dev/vitest/issues/8757
+// https://github.com/capricorn86/happy-dom/issues/1950
+test("frontend disables node webstorage on node 25+", () => {
+  const url = import.meta.url;
+  const nodeMajor = Number(process.versions.node.split(".")[0]);
+  const expected = nodeMajor >= 25 ? ["--no-experimental-webstorage"] : [];
+  expect(frontend({url}).test?.execArgv).toEqual(expected);
+  expect(backend({url}).test?.execArgv).toBeUndefined();
+});
+
+test("localStorage works in happy-dom env", () => {
+  expect(typeof localStorage).toEqual("object");
+  localStorage.setItem("k", "v");
+  expect(localStorage.getItem("k")).toEqual("v");
+  localStorage.removeItem("k");
+});

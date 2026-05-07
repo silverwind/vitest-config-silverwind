@@ -124,9 +124,17 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
   };
 }
 
+// Node 25+ enables Web Storage by default, which shadows happy-dom's Storage in
+// vitest's env setup so `localStorage` reads as `undefined` in tests.
+// https://github.com/vitest-dev/vitest/issues/8757
+// https://github.com/capricorn86/happy-dom/issues/1950
+const nodeMajor = Number(process.versions.node.split(".")[0]);
+const happyDomExecArgv = nodeMajor >= 25 ? ["--no-experimental-webstorage"] : [];
+
 export const frontend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
   test: {
     environment: "happy-dom",
+    execArgv: happyDomExecArgv,
     ...test,
   },
   ...other,

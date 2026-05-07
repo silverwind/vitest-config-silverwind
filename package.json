@@ -36,6 +36,7 @@
     "@typescript/native-preview": "7.0.0-dev.20260505.1",
     "eslint": "10.3.0",
     "eslint-config-silverwind": "133.0.0",
+    "happy-dom": "20.9.0",
     "js-yaml": "4.1.1",
     "tsdown": "0.21.10",
     "tsdown-config-silverwind": "2.1.1",
