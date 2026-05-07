@@ -13,7 +13,7 @@
   "files": [
     "dist"
   ],
-  "packageManager": "pnpm@10.33.3",
+  "packageManager": "pnpm@10.33.4",
   "engines": {
     "node": ">=20"
   },
@@ -33,9 +33,9 @@
   },
   "devDependencies": {
     "@types/node": "25.6.0",
-    "@typescript/native-preview": "7.0.0-dev.20260505.1",
+    "@typescript/native-preview": "7.0.0-dev.20260506.1",
     "eslint": "10.3.0",
-    "eslint-config-silverwind": "133.0.0",
+    "eslint-config-silverwind": "133.0.1",
     "happy-dom": "20.9.0",
     "js-yaml": "4.1.1",
     "tsdown": "0.21.10",
