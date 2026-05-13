@@ -1,6 +1,7 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
 import {accessSync, constants} from "node:fs";
+import {availableParallelism} from "node:os";
 import {stringPlugin} from "vite-string-plugin";
 import type {InlineConfig} from "vitest/node";
 import type {Plugin, UserConfig, PluginOption} from "vite";
@@ -86,6 +87,7 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
         ...setupFiles,
       ].filter(Boolean)),
       testTimeout: 30000,
+      maxConcurrency: availableParallelism(),
       isolate: false, // perf improvement when tests are pure
       pool: "forks", // https://github.com/vitest-dev/vitest/issues/2008
       cache: false, // https://github.com/vitest-dev/vitest/issues/2008
