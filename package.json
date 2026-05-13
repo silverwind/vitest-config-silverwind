@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@types/node": "25.7.0",
-    "@typescript/native-preview": "7.0.0-dev.20260512.1",
+    "@typescript/native-preview": "7.0.0-dev.20260513.1",
     "eslint": "10.3.0",
     "eslint-config-silverwind": "133.0.1",
     "happy-dom": "20.9.0",
@@ -42,7 +42,7 @@
     "tsdown-config-silverwind": "3.0.1",
     "typescript": "6.0.3",
     "typescript-config-silverwind": "18.0.0",
-    "updates": "17.16.10",
+    "updates": "17.16.11",
     "updates-config-silverwind": "3.0.2",
     "versions": "15.0.3",
     "vite-plugin-dts": "5.0.0",
