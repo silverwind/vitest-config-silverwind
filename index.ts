@@ -32,9 +32,7 @@ function dedupePlugins(libPlugins: Array<PluginOption>, userPlugins: Array<Plugi
   for (const plugin of [...userPlugins, ...libPlugins]) { // prefer user plugins
     const name = plugin ? uniquePluginName(plugin as Plugin) : null;
 
-    if (seen.has(name)) {
-      continue;
-    } else {
+    if (!seen.has(name)) {
       ret.push(plugin as Plugin);
       if (name) {
         seen.add(name);
