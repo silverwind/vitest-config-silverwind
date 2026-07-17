@@ -92,6 +92,13 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
       open: false,
       allowOnly: true,
       passWithNoTests: true,
+      // mirrors vitest's default reporter resolution, but with the job summary
+      // disabled as it shows as noise on Gitea Actions run pages
+      // https://github.com/silverwind/vitest-config-silverwind/issues/3
+      reporters: [
+        "default",
+        ...(process.env.GITHUB_ACTIONS === "true" ? [["github-actions", {jobSummary: {enabled: false}}]] satisfies InlineConfig["reporters"] : []),
+      ],
       globals: true,
       watch: false,
       sequence: {concurrent: true},
