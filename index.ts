@@ -92,6 +92,7 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
       open: false,
       allowOnly: true,
       passWithNoTests: true,
+      // disable noisy job summaries, https://github.com/silverwind/vitest-config-silverwind/issues/3
       reporters: process.env.GITHUB_ACTIONS === "true" ?
         ["default", ["github-actions", {jobSummary: {enabled: false}}]] : ["default"],
       globals: true,
