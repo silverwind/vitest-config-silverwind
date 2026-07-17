@@ -34,6 +34,23 @@ test("coverage merge preserves defaults", () => {
   expect(coverage.exclude).toContainEqual("src/generated.ts");
 });
 
+test("reporters disable job summary in CI", () => {
+  const url = import.meta.url;
+  const previousValue = process.env.GITHUB_ACTIONS;
+  try {
+    process.env.GITHUB_ACTIONS = "true";
+    expect(backend({url}).test?.reporters).toEqual(["default", ["github-actions", {jobSummary: {enabled: false}}]]);
+    delete process.env.GITHUB_ACTIONS;
+    expect(backend({url}).test?.reporters).toEqual(["default"]);
+  } finally {
+    if (previousValue === undefined) {
+      delete process.env.GITHUB_ACTIONS;
+    } else {
+      process.env.GITHUB_ACTIONS = previousValue;
+    }
+  }
+});
+
 test("jest-extended", () => {
   expect([]).toBeArray();
   expect({}).toBeObject();
