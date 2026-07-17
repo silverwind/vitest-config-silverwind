@@ -92,8 +92,7 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
       open: false,
       allowOnly: true,
       passWithNoTests: true,
-      // vitest's default reporter resolution, but with noisy job summaries disabled
-      // https://github.com/silverwind/vitest-config-silverwind/issues/3
+      // vitest enables the github-actions reporter only when this env var is set, mirror that but disable its noisy job summary
       reporters: process.env.GITHUB_ACTIONS === "true" ?
         ["default", ["github-actions", {jobSummary: {enabled: false}}]] : ["default"],
       globals: true,
