@@ -9,4 +9,5 @@ export default defineConfig(nodeLib({
     fileURLToPath(new URL("vitest.setup.ts", import.meta.url)),
   ],
   deps: {neverBundle: ["vitest", "jest-extended"]},
+  banner: {dts: 'import "jest-extended";'},
 }));
