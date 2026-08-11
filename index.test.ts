@@ -56,6 +56,12 @@ test("jest-extended", () => {
   expect({}).toBeObject();
 });
 
+test("projects omit the root include", () => {
+  const url = import.meta.url;
+  expect(backend({url}).test?.include).toBeArray();
+  expect(backend({url, test: {projects: [{test: {name: "a"}}]}}).test?.include).toBeUndefined();
+});
+
 // Node 25+ enables Web Storage by default which shadows happy-dom's Storage in
 // vitest's env setup, leaving `localStorage` undefined. The frontend config
 // passes --no-experimental-webstorage to fix this.

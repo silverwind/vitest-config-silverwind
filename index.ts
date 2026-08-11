@@ -76,9 +76,8 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
 
   return {
     test: {
-      include: [
-        "**/?(*.)test.?(c|m)[jt]s?(x)",
-      ],
+      // vitest merges a root include into each project's own instead of letting it win, so omit it
+      ...(!otherTest.projects && {include: ["**/?(*.)test.?(c|m)[jt]s?(x)"]}),
       exclude: dirExclude,
       setupFiles: uniq([
         setupFile,

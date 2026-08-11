@@ -1,5 +1,5 @@
-SOURCE_FILES := index.ts
-DIST_FILES := dist/index.js
+SOURCE_FILES := index.ts vitest.setup.ts
+DIST_FILES := dist/index.js dist/vitest.setup.js
 
 node_modules: pnpm-lock.yaml
 	pnpm install
