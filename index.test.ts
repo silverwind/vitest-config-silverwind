@@ -1,4 +1,4 @@
-import {frontend, backend} from "./index.ts";
+import {frontend, backend, browser} from "./index.ts";
 
 test("config", () => {
   const url = import.meta.url;
@@ -10,6 +10,16 @@ test("config", () => {
   expect(backend({url, plugins: [{name: "foo"}]}).plugins?.length).toEqual(2);
   expect(backend({url, plugins: [{name: "1"}, {name: "1"}]}).plugins?.length).toEqual(2);
   expect(backend({url, plugins: [{name: "1"}, {name: "2"}]}).plugins?.length).toEqual(3);
+});
+
+test("browser", () => {
+  const url = import.meta.url;
+  expect(browser({url}).test?.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
+  expect(browser({url}).test?.environment).toBeUndefined();
+  const custom = browser({url, test: {browser: {headless: false, instances: [{browser: "chromium"}]}}});
+  expect(custom.test?.browser?.headless).toEqual(false);
+  expect(custom.test?.browser?.instances).toHaveLength(1);
+  expect(custom.test?.browser?.enabled).toEqual(true);
 });
 
 test("coverage defaults", () => {

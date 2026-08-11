@@ -150,3 +150,17 @@ export const backend = ({test = {}, ...other}: CustomConfig = defaultConfig): Vi
   },
   ...other,
 });
+
+// the browser is the environment, so no `environment` is set. `provider` and `instances` are project-specific.
+export const browser = ({test: {browser: browserConfig, ...test} = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
+  test: {
+    browser: {
+      enabled: true,
+      headless: true,
+      screenshotFailures: false,
+      ...browserConfig,
+    },
+    ...test,
+  },
+  ...other,
+});
