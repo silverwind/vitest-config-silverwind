@@ -1,3 +1,4 @@
+import {matchesGlob} from "node:path";
 import {frontend, backend, browser} from "./index.ts";
 
 test("config", () => {
@@ -10,6 +11,14 @@ test("config", () => {
   expect(backend({url, plugins: [{name: "foo"}]}).plugins?.length).toEqual(2);
   expect(backend({url, plugins: [{name: "1"}, {name: "1"}]}).plugins?.length).toEqual(2);
   expect(backend({url, plugins: [{name: "1"}, {name: "2"}]}).plugins?.length).toEqual(3);
+});
+
+test("excludes agent tool directories", () => {
+  const exclude = backend({url: import.meta.url}).test?.exclude ?? [];
+  const excluded = (file: string) => exclude.some(pattern => matchesGlob(file, pattern));
+  expect(excluded(".claude/worktrees/agent-1/index.test.ts")).toEqual(true);
+  expect(excluded("sub/.codex/skills/foo.test.ts")).toEqual(true);
+  expect(excluded("src/foo.test.ts")).toEqual(false);
 });
 
 test("browser", () => {

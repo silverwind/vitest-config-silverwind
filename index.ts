@@ -50,7 +50,7 @@ const setupFileTs = "vitest.setup.ts";
 /** Directories to exclude from both test discovery and coverage */
 const dirExclude = [
   "**/{node_modules,dist,build,e2e,snapshots,fixtures,persistent}/**",
-  "**/.{air,git,github,gitea,make,playwright-mcp,swc,ruff_cache,venv,vscode}/**",
+  "**/.{air,claude,codex,git,github,gitea,make,playwright-mcp,swc,ruff_cache,venv,vscode}/**",
 ];
 
 /** Files to exclude from coverage, always applied even when user adds custom excludes */
