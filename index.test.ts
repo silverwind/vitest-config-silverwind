@@ -23,12 +23,15 @@ test("excludes agent tool directories", () => {
 
 test("browser", () => {
   const url = import.meta.url;
-  expect(browser({url}).test?.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
-  expect(browser({url}).test?.environment).toBeUndefined();
+  const defaults = browser({url});
+  expect(defaults.test?.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
+  expect(defaults.test?.environment).toBeUndefined();
+  expect(defaults.test?.maxWorkers).toEqual("50%");
   const custom = browser({url, test: {browser: {headless: false, instances: [{browser: "chromium"}]}}});
   expect(custom.test?.browser?.headless).toEqual(false);
   expect(custom.test?.browser?.instances).toHaveLength(1);
   expect(custom.test?.browser?.enabled).toEqual(true);
+  expect(browser({url, test: {maxWorkers: 1}}).test?.maxWorkers).toEqual(1);
 });
 
 test("coverage defaults", () => {
