@@ -1,5 +1,6 @@
-import {matchesGlob} from "node:path";
-import {frontend, backend, browser} from "./index.ts";
+import {matchesGlob, resolve} from "node:path";
+import {spawnSync} from "node:child_process";
+import {base, frontend, backend, browser} from "./index.ts";
 
 test("config", () => {
   const url = import.meta.url;
@@ -26,7 +27,6 @@ test("browser", () => {
   const defaults = browser({url});
   expect(defaults.test?.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
   expect(defaults.test?.environment).toBeUndefined();
-  expect(defaults.test?.maxWorkers).toEqual("50%");
   const custom = browser({url, test: {browser: {headless: false, instances: [{browser: "chromium"}]}}});
   expect(custom.test?.browser?.headless).toEqual(false);
   expect(custom.test?.browser?.instances).toHaveLength(1);
@@ -82,6 +82,33 @@ test("projects omit the root include", () => {
   const url = import.meta.url;
   expect(backend({url}).test?.include).toBeArray();
   expect(backend({url, test: {projects: [{test: {name: "a"}}]}}).test?.include).toBeUndefined();
+});
+
+test("projects built here contribute only their input", () => {
+  const config = base({url: import.meta.url, test: {projects: [
+    backend({test: {name: "a", include: ["a/**"]}}),
+    browser({test: {name: "b"}}),
+    {test: {name: "c"}},
+    "packages/*",
+  ]}});
+  expect(config.test?.environment).toBeUndefined();
+  expect(config.test?.projects).toEqual([
+    {test: {environment: "node", name: "a", include: ["a/**"]}},
+    {test: {browser: {enabled: true, headless: true, screenshotFailures: false}, name: "b"}},
+    {test: {name: "c"}},
+    "packages/*",
+  ]);
+});
+
+test("a multi-project run emits no warnings", () => {
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^(VITEST|NODE_OPTIONS|NODE_NO_WARNINGS)/.test(key)));
+  const {status, stdout, stderr} = spawnSync(process.execPath, [
+    resolve("node_modules/vitest/vitest.mjs"), "run", "--root", resolve("fixtures/projects"),
+  ], {encoding: "utf8", env});
+  const output = `${stdout}${stderr}`;
+  expect(output).toMatch(/Test Files\s+2 passed/);
+  expect(output).not.toMatch(/warn/i);
+  expect(status).toEqual(0);
 });
 
 test("localStorage works in happy-dom env", () => {

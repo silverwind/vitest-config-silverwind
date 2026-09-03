@@ -9,16 +9,12 @@ import type {Plugin, UserConfig, PluginOption} from "vite";
 type VitestConfig = UserConfig & {test?: InlineConfig};
 type CustomConfig = VitestConfig & {
   /** The value of import.meta.url from your config. */
-  url: string,
+  url?: string,
 };
 
 declare module "vitest" {
   interface Matchers<R> extends jest.Matchers<R> {} // eslint-disable-line @typescript-eslint/no-empty-object-type -- augmentation can only extend
 }
-
-const defaultConfig = {
-  url: "",
-};
 
 function uniq<T extends Array<any>>(arr: T): T {
   return Array.from(new Set(arr)) as T;
@@ -47,6 +43,9 @@ function dedupePlugins(libPlugins: Array<PluginOption>, userPlugins: Array<Plugi
   return ret;
 }
 
+// what a config was built from, which is all it contributes as a project since vitest 5 merges the root into it
+const inputs = new WeakMap<object, VitestConfig>();
+
 // avoid vite bug https://github.com/vitejs/vite/issues/3295
 const setupFileJs = "vitest.setup.js";
 const setupFileTs = "vitest.setup.ts";
@@ -68,7 +67,8 @@ const coverageExclude = [
   ...dirExclude,
 ];
 
-function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest} = {}, plugins = [], ...other}: CustomConfig): VitestConfig {
+export function base({url, ...input}: CustomConfig = {}): VitestConfig {
+  const {test: {setupFiles = [], coverage: userCoverage, projects, ...otherTest} = {}, plugins = [], ...other} = input;
   let setupFile: string = "";
   for (const file of [setupFileJs, setupFileTs]) {
     try {
@@ -78,10 +78,10 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
     } catch {}
   }
 
-  return {
+  const config: VitestConfig = {
     test: {
       // vitest merges a root include into each project's own instead of letting it win, so omit it
-      ...(!otherTest.projects && {include: ["**/?(*.)test.?(c|m)[jt]s?(x)"]}),
+      ...(!projects && {include: ["**/?(*.)test.?(c|m)[jt]s?(x)"]}),
       exclude: dirExclude,
       setupFiles: uniq([
         setupFile,
@@ -123,15 +123,18 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
         }
       },
       ...otherTest,
+      ...(projects && {projects: projects.map(project => inputs.get(project as object) ?? project)}),
     },
     plugins: dedupePlugins([
       stringPlugin(),
     ], plugins),
     ...other,
   };
+  inputs.set(config, input);
+  return config;
 }
 
-export const frontend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
+export const frontend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
     environment: "happy-dom",
     ...test,
@@ -139,7 +142,7 @@ export const frontend = ({test = {}, ...other}: CustomConfig = defaultConfig): V
   ...other,
 });
 
-export const backend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
+export const backend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
     environment: "node",
     ...test,
@@ -148,9 +151,8 @@ export const backend = ({test = {}, ...other}: CustomConfig = defaultConfig): Vi
 });
 
 // the browser is the environment, so no `environment` is set. `provider` and `instances` are project-specific.
-export const browser = ({test: {browser: browserConfig, ...test} = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
+export const browser = ({test: {browser: browserConfig, ...test} = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
-    maxWorkers: "50%",
     browser: {
       enabled: true,
       headless: true,

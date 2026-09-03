@@ -27,6 +27,24 @@ export default defineConfig(browser({
 }));
 ```
 
+For `projects`, `base` is the root without an environment, and inside `projects` the functions contribute only their environment on top of what the root shares:
+
+```js
+import {defineConfig} from "vitest/config";
+import {playwright} from "@vitest/browser-playwright";
+import {base, backend, browser} from "vitest-config-silverwind";
+
+export default defineConfig(base({
+  url: import.meta.url,
+  test: {
+    projects: [
+      browser({test: {name: "browser", include: ["**/*.test.tsx"], browser: {provider: playwright(), instances: [{browser: "chromium"}]}}}),
+      backend({test: {name: "node", include: ["**/*.test.ts"]}}),
+    ],
+  },
+}));
+```
+
 [jest-extended](https://github.com/jest-community/jest-extended) matchers are registered and typed automatically, no `jest-extended` dependency needed.
 
 © [silverwind](https://github.com/silverwind), distributed under BSD licence.
