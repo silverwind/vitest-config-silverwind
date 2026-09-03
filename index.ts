@@ -12,6 +12,10 @@ type CustomConfig = VitestConfig & {
   url: string,
 };
 
+declare module "vitest" {
+  interface Matchers<R> extends jest.Matchers<R> {} // eslint-disable-line @typescript-eslint/no-empty-object-type -- augmentation can only extend
+}
+
 const defaultConfig = {
   url: "",
 };
@@ -50,7 +54,7 @@ const setupFileTs = "vitest.setup.ts";
 /** Directories to exclude from both test discovery and coverage */
 const dirExclude = [
   "**/{node_modules,dist,build,e2e,snapshots,fixtures,persistent}/**",
-  "**/.{air,claude,codex,git,github,gitea,make,playwright-mcp,swc,ruff_cache,venv,vscode}/**",
+  "**/.{air,claude,codex,git,github,gitea,make,playwright-mcp,swc,ruff_cache,venv,vitest,vscode}/**",
 ];
 
 /** Files to exclude from coverage, always applied even when user adds custom excludes */
@@ -127,17 +131,9 @@ function base({url, test: {setupFiles = [], coverage: userCoverage, ...otherTest
   };
 }
 
-// Node 25+ enables Web Storage by default, which shadows happy-dom's Storage in
-// vitest's env setup so `localStorage` reads as `undefined` in tests.
-// https://github.com/vitest-dev/vitest/issues/8757
-// https://github.com/capricorn86/happy-dom/issues/1950
-const nodeMajor = Number(process.versions.node.split(".")[0]);
-const happyDomExecArgv = nodeMajor >= 25 ? ["--no-experimental-webstorage"] : [];
-
 export const frontend = ({test = {}, ...other}: CustomConfig = defaultConfig): VitestConfig => base({
   test: {
     environment: "happy-dom",
-    execArgv: happyDomExecArgv,
     ...test,
   },
   ...other,
