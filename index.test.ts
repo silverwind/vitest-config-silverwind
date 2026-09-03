@@ -101,7 +101,7 @@ test("projects built here contribute only their input", () => {
 });
 
 test("a multi-project run emits no warnings", () => {
-  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^(VITEST|NODE_OPTIONS|NODE_NO_WARNINGS)/.test(key)));
+  const env = {...Object.fromEntries(Object.entries(process.env).filter(([key]) => !/^(VITEST|NODE_OPTIONS|NODE_NO_WARNINGS|FORCE_COLOR)/.test(key))), NO_COLOR: "1"};
   const {status, stdout, stderr} = spawnSync(process.execPath, [
     resolve("node_modules/vitest/vitest.mjs"), "run", "--root", resolve("fixtures/projects"),
   ], {encoding: "utf8", env});
