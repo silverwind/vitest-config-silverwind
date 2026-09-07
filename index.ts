@@ -1,6 +1,5 @@
 import {join, dirname, basename, relative, sep} from "node:path";
 import {fileURLToPath} from "node:url";
-import {accessSync, constants} from "node:fs";
 import {availableParallelism} from "node:os";
 import {stringPlugin} from "vite-string-plugin";
 import type {InlineConfig} from "vitest/node";
@@ -69,24 +68,14 @@ const coverageExclude = [
 
 export function base({url, ...input}: CustomConfig = {}): VitestConfig {
   const {test: {setupFiles = [], coverage: userCoverage, projects, ...otherTest} = {}, plugins = [], ...other} = input;
-  let setupFile: string = "";
-  for (const file of [setupFileJs, setupFileTs]) {
-    try {
-      const path = fileURLToPath(new URL(file, import.meta.url));
-      accessSync(path, constants.R_OK);
-      setupFile = path;
-    } catch {}
-  }
+  const setupFile = fileURLToPath(new URL(import.meta.url.endsWith(".ts") ? setupFileTs : setupFileJs, import.meta.url));
 
   const config: VitestConfig = {
     test: {
       // vitest merges a root include into each project's own instead of letting it win, so omit it
       ...(!projects && {include: ["**/?(*.)test.?(c|m)[jt]s?(x)"]}),
       exclude: dirExclude,
-      setupFiles: uniq([
-        setupFile,
-        ...setupFiles,
-      ].filter(Boolean)),
+      setupFiles: uniq([setupFile, ...setupFiles]),
       testTimeout: 30000,
       maxConcurrency: availableParallelism(),
       isolate: false, // perf improvement when tests are pure
