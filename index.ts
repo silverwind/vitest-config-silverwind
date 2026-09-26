@@ -75,7 +75,7 @@ export function base({url, ...input}: CustomConfig = {}): VitestConfig {
       // vitest merges a root include into each project's own instead of letting it win, so omit it
       ...(!projects && {include: ["**/?(*.)test.?(c|m)[jt]s?(x)"]}),
       exclude: dirExclude,
-      setupFiles: uniq([setupFile, ...setupFiles]),
+      setupFiles: uniq([setupFile, setupFiles].flat()),
       testTimeout: 30000,
       maxConcurrency: availableParallelism(),
       isolate: false, // perf improvement when tests are pure
