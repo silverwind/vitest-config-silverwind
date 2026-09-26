@@ -17,39 +17,27 @@ test("config", () => {
 
 test("excludes agent tool directories", () => {
   const exclude = backend().test!.exclude!;
-  const excluded = (file: string) => exclude.some(pattern => matchesGlob(file, pattern));
-  expect(excluded(".claude/worktrees/agent-1/index.test.ts")).toEqual(true);
-  expect(excluded("sub/.codex/skills/foo.test.ts")).toEqual(true);
-  expect(excluded("src/foo.test.ts")).toEqual(false);
+  expect([".claude/worktrees/agent-1/index.test.ts", "sub/.codex/skills/foo.test.ts", "src/foo.test.ts"]
+    .map(file => exclude.some(pattern => matchesGlob(file, pattern)))).toEqual([true, true, false]);
 });
 
 test("browser", () => {
-  const defaults = browser();
-  expect(defaults.test!.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
-  expect(defaults.test!.environment).toBeUndefined();
-  const custom = browser({test: {browser: {headless: false, instances: [{browser: "chromium"}]}}});
-  expect(custom.test!.browser!.headless).toEqual(false);
-  expect(custom.test!.browser!.instances).toHaveLength(1);
-  expect(custom.test!.browser!.enabled).toEqual(true);
+  const defaults = browser().test!;
+  expect(defaults.browser).toEqual({enabled: true, headless: true, screenshotFailures: false});
+  expect(defaults.environment).toBeUndefined();
+  expect(browser({test: {browser: {headless: false, instances: [{browser: "chromium"}]}}}).test!.browser).toEqual({
+    enabled: true, headless: false, screenshotFailures: false, instances: [{browser: "chromium"}],
+  });
   expect(browser({test: {maxWorkers: 1}}).test!.maxWorkers).toEqual(1);
 });
 
-test("coverage defaults", () => {
-  const coverage = backend().test!.coverage!;
-  expect(coverage.provider).toEqual("v8");
-  expect(coverage.reporter).toEqual(["text"]);
-  expect(coverage.include).toEqual(["**/*.{js,ts,jsx,tsx}"]);
-  expect(coverage.exclude).toContainEqual("**/*.test.*");
-  expect(coverage.exclude).toContainEqual("**/*.d.ts");
-});
-
-test("coverage merge preserves defaults", () => {
-  const coverage = backend({test: {coverage: {include: ["src/**/*.ts"], exclude: ["src/generated.ts"]}}}).test!.coverage!;
-  expect(coverage.provider).toEqual("v8");
-  expect(coverage.include).toEqual(["src/**/*.ts"]);
-  expect(coverage.exclude).toContainEqual("**/*.test.*");
-  expect(coverage.exclude).toContainEqual("**/*.d.ts");
-  expect(coverage.exclude).toContainEqual("src/generated.ts");
+test.each([
+  ["defaults", undefined, ["**/*.{js,ts,jsx,tsx}"], []],
+  ["merge preserves defaults", {include: ["src/**/*.ts"], exclude: ["src/generated.ts"]}, ["src/**/*.ts"], ["src/generated.ts"]],
+])("coverage %s", (_name, coverage, include, exclude) => {
+  expect(backend({test: {coverage}}).test!.coverage).toMatchObject({
+    provider: "v8", reporter: ["text"], include, exclude: expect.arrayContaining(["**/*.test.*", "**/*.d.ts", ...exclude]),
+  });
 });
 
 test("reporters disable job summary in CI", () => {
