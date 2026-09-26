@@ -1,8 +1,17 @@
-# vitest-config-silverwind [![](https://img.shields.io/npm/v/vitest-config-silverwind.svg)](https://www.npmjs.org/package/vitest-config-silverwind) [![](https://packagephobia.com/badge?p=vitest-config-silverwind)](https://packagephobia.com/result?p=vitest-config-silverwind) [![](https://img.shields.io/badge/licence-bsd-blue.svg)](https://raw.githubusercontent.com/silverwind/vitest-config-silverwind/master/LICENSE)
+# vitest-config-silverwind
+[![](https://img.shields.io/npm/v/vitest-config-silverwind.svg)](https://www.npmjs.org/package/vitest-config-silverwind) [![](https://packagephobia.com/badge?p=vitest-config-silverwind)](https://packagephobia.com/result?p=vitest-config-silverwind)
 
-Shared Vitest configuration
+> Shared Vitest configuration
 
-```js
+## Usage
+
+```sh
+pnpm add -D vitest-config-silverwind
+```
+
+In `vitest.config.ts`:
+
+```ts
 import {defineConfig} from "vitest/config";
 import {backend} from "vitest-config-silverwind";
 
@@ -11,7 +20,7 @@ export default defineConfig(backend({url: import.meta.url}));
 
 `frontend` runs tests in happy-dom, `backend` in node. `browser` runs them in real browsers, where `provider` and `instances` are yours to pick:
 
-```js
+```ts
 import {defineConfig} from "vitest/config";
 import {playwright} from "@vitest/browser-playwright";
 import {browser} from "vitest-config-silverwind";
@@ -29,7 +38,7 @@ export default defineConfig(browser({
 
 For `projects`, `base` is the root without an environment, and inside `projects` the functions contribute only their environment on top of what the root shares:
 
-```js
+```ts
 import {defineConfig} from "vitest/config";
 import {playwright} from "@vitest/browser-playwright";
 import {base, backend, browser} from "vitest-config-silverwind";
@@ -47,4 +56,4 @@ export default defineConfig(base({
 
 [jest-extended](https://github.com/jest-community/jest-extended) matchers are registered and typed automatically, no `jest-extended` dependency needed.
 
-© [silverwind](https://github.com/silverwind), distributed under BSD licence.
+© [silverwind](https://github.com/silverwind), distributed under BSD licence
