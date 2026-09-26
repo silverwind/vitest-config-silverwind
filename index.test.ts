@@ -12,6 +12,7 @@ test("config", () => {
   expect(backend({plugins: [{name: "foo"}]}).plugins!.length).toEqual(2);
   expect(backend({plugins: [{name: "1"}, {name: "1"}]}).plugins!.length).toEqual(2);
   expect(backend({plugins: [{name: "1"}, {name: "2"}]}).plugins!.length).toEqual(3);
+  expect(backend({plugins: [[{name: "1"}], Promise.resolve({name: "2"})]}).plugins!.length).toEqual(3);
 });
 
 test("excludes agent tool directories", () => {
