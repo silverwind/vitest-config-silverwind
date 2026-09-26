@@ -45,7 +45,6 @@ function dedupePlugins(libPlugins: Array<PluginOption>, userPlugins: Array<Plugi
 // what a config was built from, which is all it contributes as a project since vitest 5 merges the root into it
 const inputs = new WeakMap<object, VitestConfig>();
 
-// avoid vite bug https://github.com/vitejs/vite/issues/3295
 const setupFileJs = "vitest.setup.js";
 const setupFileTs = "vitest.setup.ts";
 
