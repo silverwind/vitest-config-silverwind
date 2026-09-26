@@ -84,8 +84,7 @@ export function base({url, ...input}: CustomConfig = {}): VitestConfig {
       open: false,
       allowOnly: true,
       passWithNoTests: true,
-      // vitest enables the github-actions reporter only when this env var is set,
-      // mirror that but disable its noisy job summary
+      // mirror vitest's GITHUB_ACTIONS-gated github-actions reporter, minus its noisy job summary
       reporters: process.env.GITHUB_ACTIONS === "true" ?
         ["default", ["github-actions", {jobSummary: {enabled: false}}]] : ["default"],
       globals: true,
