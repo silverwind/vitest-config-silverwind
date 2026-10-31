@@ -20,6 +20,9 @@
   "engines": {
     "node": ">=22.12"
   },
+  "dependencies": {
+    "jest-extended": "7.0.0"
+  },
   "peerDependencies": {
     "@vitest/coverage-v8": "*",
     "happy-dom": "*",
@@ -31,21 +34,17 @@
       "optional": true
     }
   },
-  "dependencies": {
-    "jest-extended": "7.0.0"
-  },
   "devDependencies": {
     "@types/node": "26.6.3",
-    "@typescript/native-preview": "7.0.0-dev.20260707.2",
     "eslint": "10.11.0",
-    "eslint-config-silverwind": "151.0.1",
+    "eslint-config-silverwind": "155.2.0",
     "happy-dom": "20.14.5",
-    "tsdown": "0.23.0",
-    "tsdown-config-silverwind": "4.1.2",
-    "typescript": "6.0.3",
+    "tsdown": "0.23.4",
+    "tsdown-config-silverwind": "4.2.0",
+    "typescript": "7.0.2",
     "typescript-config-silverwind": "21.0.1",
     "updates": "19.0.2",
-    "updates-config-silverwind": "4.0.7",
+    "updates-config-silverwind": "4.1.0",
     "versions": "15.5.1",
     "vite-string-plugin": "2.0.6",
     "vitest": "5.0.2"
