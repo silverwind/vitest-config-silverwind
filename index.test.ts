@@ -1,9 +1,8 @@
 import {matchesGlob, resolve} from "node:path";
 import {spawnSync} from "node:child_process";
-import {base, frontend, backend, browser} from "./index.ts";
+import {base, backend, browser} from "./index.ts";
 
 test("config", () => {
-  expect(frontend().test!.environment).toBeTruthy();
   expect(backend().test!.environment).toBeTruthy();
   expect(backend().test!.setupFiles!.length).toEqual(1);
   expect(backend().plugins!.length).toEqual(1);
@@ -86,11 +85,4 @@ test("a multi-project run emits no warnings", () => {
   expect(output).toMatch(/Test Files\s+2 passed/);
   expect(output).not.toMatch(/warn/i);
   expect(status).toEqual(0);
-});
-
-test("localStorage works in happy-dom env", () => {
-  expect(typeof localStorage).toEqual("object");
-  localStorage.setItem("k", "v");
-  expect(localStorage.getItem("k")).toEqual("v");
-  localStorage.removeItem("k");
 });

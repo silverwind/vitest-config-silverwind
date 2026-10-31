@@ -25,20 +25,15 @@
   },
   "peerDependencies": {
     "@vitest/coverage-v8": "*",
-    "happy-dom": "*",
     "vite": "*",
     "vitest": "*"
   },
-  "peerDependenciesMeta": {
-    "happy-dom": {
-      "optional": true
-    }
-  },
   "devDependencies": {
     "@types/node": "26.6.6",
+    "@vitest/browser-playwright": "5.0.5",
     "eslint": "10.14.0",
     "eslint-config-silverwind": "155.2.0",
-    "happy-dom": "21.0.4",
+    "playwright": "1.64.1",
     "tsdown": "0.23.4",
     "tsdown-config-silverwind": "4.2.0",
     "typescript": "7.0.2",

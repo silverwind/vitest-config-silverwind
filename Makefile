@@ -18,8 +18,12 @@ lint-fix: node_modules
 	pnpm exec eslint-silverwind --color . --fix
 	pnpm exec tsc
 
+.PHONY: browsers
+browsers: node_modules
+	pnpm exec playwright install --only-shell chromium
+
 .PHONY: test
-test: node_modules build
+test: node_modules build browsers
 	pnpm exec vitest
 
 .PHONY: test-update

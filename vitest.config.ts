@@ -1,4 +1,4 @@
 import {defineConfig} from "vitest/config";
-import {frontend} from "./index.ts";
+import {backend} from "./index.ts";
 
-export default defineConfig(frontend({url: import.meta.url}));
+export default defineConfig(backend({url: import.meta.url}));

@@ -121,14 +121,6 @@ export function base({url, ...input}: CustomConfig = {}): VitestConfig {
   return config;
 }
 
-export const frontend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
-  test: {
-    environment: "happy-dom",
-    ...test,
-  },
-  ...other,
-});
-
 export const backend = ({test = {}, ...other}: CustomConfig = {}): VitestConfig => base({
   test: {
     environment: "node",

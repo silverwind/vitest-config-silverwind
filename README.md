@@ -18,7 +18,7 @@ import {backend} from "vitest-config-silverwind";
 export default defineConfig(backend({url: import.meta.url}));
 ```
 
-`frontend` runs tests in happy-dom, `backend` in node. `browser` runs them in real browsers, where `provider` and `instances` are yours to pick:
+`backend` runs tests in node, `browser` in real browsers, where `provider` and `instances` are yours to pick:
 
 ```ts
 import {defineConfig} from "vitest/config";
